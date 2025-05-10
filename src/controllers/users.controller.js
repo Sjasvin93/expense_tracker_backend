@@ -22,7 +22,7 @@ exports.registerUser = async (req, res) => {
         });
 
         await newUser.save();
-        sendApiResponse(res, 'User created successfully', 201, true, newUser);
+        sendApiResponse(res, 'User created successfully');
     } catch (error) {
         console.error(error);
         sendApiResponse(res, 'Error creating user', 500, false);

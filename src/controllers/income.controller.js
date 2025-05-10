@@ -6,10 +6,11 @@ const excelJS = require('exceljs');
 // Create a new income
 const createIncome = async (req, res) => {
   try {
+    const {user_id} = req.user;
     const { userId, icon, source, amount, date } = req.body;
 
     const newIncome = new Income({
-      userId,
+      userId: user_id,
       icon,
       source,
       amount,

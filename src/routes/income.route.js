@@ -3,17 +3,18 @@
 const express = require('express');
 const router = express.Router();
 const Controller = require('../controllers/income.controller');
+const {authenticateUser} = require("../middlewares/auth.middleware")
 
 // Create new income
-router.post('/income', Controller.createIncome);
+router.post('/create-income', authenticateUser, Controller.createIncome);
 
 // Get all incomes (optionally filter by userId)
-router.get('/income', Controller.getAllIncomes);
+router.get('/get-all-income', authenticateUser, Controller.getAllIncomes);
 
 // Delete income by ID
-router.delete('/income/:id', Controller.deleteIncome);
+router.delete('/delete-income/:id', authenticateUser, Controller.deleteIncome);
 
 // Download incomes as Excel file (for a user)
-router.get('/income/download/:userId', Controller.downloadIncomeExcel);
+router.get('/download-income/', authenticateUser, Controller.downloadIncomeExcel);
 
 module.exports = router;

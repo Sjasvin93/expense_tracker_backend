@@ -1,16 +1,12 @@
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
-const constants = require("../constants");
-const response = require("../response");
-const User = require("../models/User");
+const User = require("../models/users.model");
 const { sendApiResponse } = require("../config/api_response");
+require("dotenv").config();
 
 const authenticateUser = async (req, res, next) => {
     try {
-        if (req.headers["x-sap-auth"] === constants.SAP_API_KEY) {
-            return next();
-        }
-
+        
         const authorizationHeader = _.get(req, "headers.authorization", "");
 
         if (!authorizationHeader) {
@@ -26,7 +22,7 @@ const authenticateUser = async (req, res, next) => {
 
         let decodedToken;
         try {
-            decodedToken = jwt.verify(token, constants.UserAuth.secret);
+            decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         } catch (error) {
             return sendApiResponse(res, "Invalid or expired token", 401, false);
         }
@@ -38,8 +34,7 @@ const authenticateUser = async (req, res, next) => {
         }
 
         req.user = { ...decodedToken, ...user };
-        req.user.user_id = req.user?.admin_user_id || req.user?.user_id;
-        req.user.vendor_external_number = req.user.vendor_external_number;
+        req.user.user_id = req.user?._id;
 
         next();
     } catch (error) {

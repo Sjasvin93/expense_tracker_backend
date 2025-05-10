@@ -20,9 +20,9 @@ const incomeSchema = new mongoose.Schema(
       required: true,
     },
     date: {
-      type: String, // Saving date as local string
+      type: Date,
       required: true,
-    },
+    }    
   },
   { timestamps: true }
 );
