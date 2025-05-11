@@ -63,7 +63,8 @@ const deleteExpense = async (req, res) => {
 // Download expenses as Excel for a user
 const downloadExpensesExcel = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { user_id } = req.user;
+    const userId = user_id;
 
     const expenses = await Expense.find({ userId });
 
@@ -86,7 +87,7 @@ const downloadExpensesExcel = async (req, res) => {
         category: expense.category,
         icon: expense.icon,
         amount: expense.amount,
-        date: expense.date,
+        date: expense.date.toISOString().split('T')[0], // Optional formatting
       });
     });
 
@@ -99,13 +100,13 @@ const downloadExpensesExcel = async (req, res) => {
       `attachment; filename=expenses_${userId}.xlsx`
     );
 
-    await workbook.xlsx.write(res);
-    res.status(200).end();
+    await workbook.xlsx.write(res); // this ends the response
   } catch (error) {
     console.error('Error downloading expenses Excel:', error);
     res.status(500).json({ message: 'Failed to download Excel', error: error.message });
   }
 };
+
 
 module.exports = {
   createExpense,

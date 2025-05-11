@@ -10,6 +10,6 @@ router.get('/get-all-expenses', ExpensesController.getAllExpenses);
 
 router.delete('/delete-expense/:id', ExpensesController.deleteExpense);
 
-router.get('/download-expenses/:userId', ExpensesController.downloadExpensesExcel);
+router.get('/download-expenses/', ExpensesController.downloadExpensesExcel);
 
 module.exports = router;
